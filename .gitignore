@@ -1,0 +1,59 @@
+# Python bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Packaging and distribution
+build/
+dist/
+*.egg-info/
+*.spec
+
+# Test and tooling caches
+.pytest_cache/
+.coverage
+.coverage.*
+.mypy_cache/
+.ruff_cache/
+.tox/
+.nox/
+htmlcov/
+
+# Local environment files
+.env
+.env.*
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Runtime project data
+root_projects/
+*.log
+*.npy
+
+# Face attendance generated assets
+people/
+photos/
+project_attendance.csv
+processing.log
+metadata.json
+canonical.jpg
+
+# Model and ML caches
+.deepface/
+.keras/
+models/
+

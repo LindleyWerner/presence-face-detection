@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="panel">
+    <h1>Face Detection Attendance</h1>
+    <p class="muted">Root projects directory: {{ root }}</p>
+</div>
+
+<div class="grid two">
+    <div class="panel">
+        <h2>Create Project</h2>
+        <form method="post" action="{{ url_for('create_project') }}">
+            <input type="text" name="project_name" placeholder="Project name" required>
+            <button type="submit">Create</button>
+        </form>
+    </div>
+
+    <div class="panel">
+        <h2>Projects</h2>
+        {% if projects %}
+            <ul>
+                {% for project in projects %}
+                    <li><a href="{{ url_for('view_project', project_name=project) }}">{{ project }}</a></li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="muted">No projects yet.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

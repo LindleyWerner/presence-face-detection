@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Face Attendance</title>
+    <style>
+        :root {
+            --bg: #f4efe6;
+            --surface: rgba(255, 252, 247, 0.92);
+            --ink: #1f2933;
+            --accent: #b45309;
+            --accent-dark: #7c2d12;
+            --line: #d6c7b3;
+            --success: #1f7a4c;
+            --error: #9f1239;
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: Georgia, "Times New Roman", serif;
+            color: var(--ink);
+            background:
+                radial-gradient(circle at top left, rgba(180,83,9,0.16), transparent 28%),
+                linear-gradient(135deg, #f5ead7, #efe9df 55%, #d9e7e2);
+            min-height: 100vh;
+        }
+        .shell {
+            width: min(1200px, calc(100% - 2rem));
+            margin: 0 auto;
+            padding: 1.5rem 0 3rem;
+        }
+        .panel {
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            padding: 1.2rem;
+            box-shadow: 0 18px 50px rgba(49, 46, 43, 0.08);
+            margin-bottom: 1rem;
+        }
+        h1, h2, h3 {
+            margin-top: 0;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+        }
+        a {
+            color: var(--accent-dark);
+            text-decoration: none;
+        }
+        .grid {
+            display: grid;
+            gap: 1rem;
+        }
+        .grid.two {
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        }
+        .flash {
+            padding: 0.75rem 1rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+        }
+        .flash.success { background: rgba(31,122,76,0.11); color: var(--success); }
+        .flash.error { background: rgba(159,18,57,0.1); color: var(--error); }
+        form {
+            display: grid;
+            gap: 0.75rem;
+        }
+        input, button {
+            width: 100%;
+            padding: 0.7rem 0.9rem;
+            border-radius: 10px;
+            border: 1px solid var(--line);
+            font: inherit;
+        }
+        button {
+            background: var(--accent);
+            border: none;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover { background: var(--accent-dark); }
+        .people {
+            display: grid;
+            gap: 1rem;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        }
+        .person-card img {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            border-radius: 14px;
+            border: 1px solid var(--line);
+            background: #f2ede4;
+        }
+        .attendance-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .attendance-table th, .attendance-table td {
+            padding: 0.55rem;
+            border-bottom: 1px solid var(--line);
+            text-align: left;
+        }
+        .muted {
+            color: #5c6470;
+            font-size: 0.95rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="shell">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>

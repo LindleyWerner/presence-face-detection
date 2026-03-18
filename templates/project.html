@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="panel">
+    <h1>{{ project_name }}</h1>
+    <p><a href="{{ url_for('home') }}">Back to projects</a></p>
+</div>
+
+<div class="grid two">
+    <div class="panel">
+        <h2>Upload Images</h2>
+        <form method="post" action="{{ url_for('upload_images', project_name=project_name) }}" enctype="multipart/form-data">
+            <input type="date" name="date" required>
+            <input type="file" name="images" multiple required>
+            <button type="submit">Upload</button>
+        </form>
+    </div>
+
+    <div class="panel">
+        <h2>Trigger Processing</h2>
+        <form method="post" action="{{ url_for('process_project', project_name=project_name) }}">
+            <input list="dates" name="date" placeholder="YYYY-MM-DD" required>
+            <datalist id="dates">
+                {% for date in photo_dates %}
+                    <option value="{{ date }}"></option>
+                {% endfor %}
+            </datalist>
+            <button type="submit">Process Date</button>
+        </form>
+    </div>
+</div>
+
+<div class="panel">
+    <h2>Attendance</h2>
+    {{ attendance_html|safe }}
+</div>
+
+<div class="panel">
+    <h2>Detected People</h2>
+    {% if people %}
+        <div class="people">
+            {% for person in people %}
+                <div class="person-card panel">
+                    <h3>{{ person.display_name }}</h3>
+                    <p class="muted">Folder: {{ person.name }}</p>
+                    {% if person.canonical_exists %}
+                        <img src="{{ url_for('person_image', project_name=project_name, person_name=person.name, filename='canonical.jpg') }}" alt="{{ person.name }}">
+                    {% else %}
+                        <div class="muted">No canonical image yet.</div>
+                    {% endif %}
+                    <p class="muted">Last seen: {{ person.metadata.get('last_seen', 'n/a') }}</p>
+                    <form method="post" action="{{ url_for('rename_person', project_name=project_name) }}">
+                        <input type="hidden" name="current_name" value="{{ person.name }}">
+                        <input type="text" name="new_name" placeholder="Rename folder/person" required>
+                        <button type="submit">Rename</button>
+                    </form>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="muted">No detected people yet.</p>
+    {% endif %}
+</div>
+{% endblock %}
