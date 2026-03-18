@@ -379,14 +379,3 @@ That guide covers:
 
 This repository is licensed under the MIT License. See [LICENSE](D:\Code\FaceDetection\LICENSE).
 
-## Third-Party License Notes
-
-Using MIT for this repository is generally compatible with the current dependency set, because the listed packages use permissive licenses such as MIT, BSD-style licenses, and Apache 2.0.
-
-Important note:
-
-- Your MIT license applies to this project's own source code, not to bundled third-party dependencies or model assets.
-- If you redistribute packaged binaries, keep any required third-party license notices that come with dependencies such as `opencv-python`, TensorFlow-related packages, or bundled model files.
-- DeepFace itself is MIT-licensed, but it wraps external models and detectors with their own license terms, so you should review those separately for production redistribution.
-
-
