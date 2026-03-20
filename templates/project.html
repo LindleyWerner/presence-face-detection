@@ -50,7 +50,7 @@
                     <p class="muted">Last seen: {{ person.metadata.get('last_seen', 'n/a') }}</p>
                     <form method="post" action="{{ url_for('rename_person', project_name=project_name) }}">
                         <input type="hidden" name="current_name" value="{{ person.name }}">
-                        <input type="text" name="new_name" placeholder="Rename folder/person" required>
+                        <input type="text" name="new_name" placeholder="New person's name" required>
                         <button type="submit">Rename</button>
                     </form>
                     <form method="post" action="{{ url_for('merge_person', project_name=project_name) }}" onsubmit="return confirm('Merge {{ person.display_name }} into the selected person? This cannot be undone automatically.');">
@@ -67,7 +67,7 @@
                     </form>
                     <form method="post" action="{{ url_for('delete_person', project_name=project_name) }}" onsubmit="return confirm('Delete {{ person.display_name }} and remove all related attendance data? This cannot be undone.');">
                         <input type="hidden" name="person_name" value="{{ person.name }}">
-                        <button type="submit">Delete</button>
+                        <button type="submit" class="danger-button">Delete</button>
                     </form>
                 </div>
             {% endfor %}

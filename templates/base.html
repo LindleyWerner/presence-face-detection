@@ -65,12 +65,16 @@
             display: grid;
             gap: 0.75rem;
         }
-        input, button {
+        input, select, button {
             width: 100%;
             padding: 0.7rem 0.9rem;
             border-radius: 10px;
             border: 1px solid var(--line);
             font: inherit;
+        }
+        select {
+            background: white;
+            color: var(--ink);
         }
         button {
             background: var(--accent);
@@ -79,10 +83,19 @@
             cursor: pointer;
         }
         button:hover { background: var(--accent-dark); }
+        .danger-button {
+            background: #b42318;
+        }
+        .danger-button:hover {
+            background: #8f1d14;
+        }
         .people {
             display: grid;
             gap: 1rem;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        }
+        .person-card form + form {
+            margin-top: 0.85rem;
         }
         .person-card img {
             width: 100%;
