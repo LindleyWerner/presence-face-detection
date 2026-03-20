@@ -118,6 +118,33 @@ def create_app(root_directory: str | None = None) -> Flask:
             flash(f"Rename failed: {exc}", "error")
         return redirect(url_for("view_project", project_name=project_name))
 
+    @app.post("/projects/<project_name>/merge")
+    def merge_person(project_name: str):
+        source_name = request.form.get("source_name", "").strip()
+        target_name = request.form.get("target_name", "").strip()
+        if not source_name or not target_name:
+            flash("Both source and target people are required.", "error")
+            return redirect(url_for("view_project", project_name=project_name))
+        try:
+            processor.merge_people(app.config["ROOT_PROJECTS"], project_name, target_name, source_name)
+            flash(f"Merged {source_name} into {target_name}.", "success")
+        except Exception as exc:
+            flash(f"Merge failed: {exc}", "error")
+        return redirect(url_for("view_project", project_name=project_name))
+
+    @app.post("/projects/<project_name>/delete")
+    def delete_person(project_name: str):
+        person_name = request.form.get("person_name", "").strip()
+        if not person_name:
+            flash("Person name is required.", "error")
+            return redirect(url_for("view_project", project_name=project_name))
+        try:
+            processor.delete_person(app.config["ROOT_PROJECTS"], project_name, person_name)
+            flash(f"Deleted {person_name}.", "success")
+        except Exception as exc:
+            flash(f"Delete failed: {exc}", "error")
+        return redirect(url_for("view_project", project_name=project_name))
+
     @app.get("/projects/<project_name>/people/<person_name>/image/<filename>")
     def person_image(project_name: str, person_name: str, filename: str):
         paths = build_project_paths(app.config["ROOT_PROJECTS"], project_name, DEFAULT_SETTINGS)

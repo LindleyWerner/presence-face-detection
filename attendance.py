@@ -41,6 +41,12 @@ class AttendanceManager:
             frame.loc[frame["Name"] == old_name, "Name"] = new_name
             self.save(frame)
 
+    def delete_person(self, person_name: str) -> None:
+        frame = self.load()
+        if person_name in frame["Name"].values:
+            frame = frame.loc[frame["Name"] != person_name].reset_index(drop=True)
+            self.save(frame)
+
     def merge_people(self, target_name: str, source_name: str) -> None:
         frame = self.load()
         if target_name not in frame["Name"].values:

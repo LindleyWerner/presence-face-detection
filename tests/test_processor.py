@@ -70,3 +70,13 @@ class ProcessorIdentityTests(unittest.TestCase):
         self.assertEqual(int(row["2025-08-15"]), 1)
         self.assertEqual(int(row["2025-08-16"]), 1)
 
+    def test_delete_person_removes_folder_and_attendance(self) -> None:
+        self._create_person("person_0001")
+        attendance = AttendanceManager(self.paths)
+        attendance.mark_present("person_0001", "2025-08-15")
+
+        self.processor.delete_person(self.root, self.project, "person_0001")
+
+        self.assertFalse((self.paths.people_dir / "person_0001").exists())
+        frame = attendance.load()
+        self.assertEqual(frame.shape[0], 0)

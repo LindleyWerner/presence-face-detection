@@ -42,7 +42,6 @@
             {% for person in people %}
                 <div class="person-card panel">
                     <h3>{{ person.display_name }}</h3>
-                    <p class="muted">Folder: {{ person.name }}</p>
                     {% if person.canonical_exists %}
                         <img src="{{ url_for('person_image', project_name=project_name, person_name=person.name, filename='canonical.jpg') }}" alt="{{ person.name }}">
                     {% else %}
@@ -53,6 +52,22 @@
                         <input type="hidden" name="current_name" value="{{ person.name }}">
                         <input type="text" name="new_name" placeholder="Rename folder/person" required>
                         <button type="submit">Rename</button>
+                    </form>
+                    <form method="post" action="{{ url_for('merge_person', project_name=project_name) }}" onsubmit="return confirm('Merge {{ person.display_name }} into the selected person? This cannot be undone automatically.');">
+                        <input type="hidden" name="source_name" value="{{ person.name }}">
+                        <select name="target_name" required>
+                            <option value="">Merge with...</option>
+                            {% for candidate in people %}
+                                {% if candidate.name != person.name %}
+                                    <option value="{{ candidate.name }}">{{ candidate.display_name }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                        <button type="submit">Merge</button>
+                    </form>
+                    <form method="post" action="{{ url_for('delete_person', project_name=project_name) }}" onsubmit="return confirm('Delete {{ person.display_name }} and remove all related attendance data? This cannot be undone.');">
+                        <input type="hidden" name="person_name" value="{{ person.name }}">
+                        <button type="submit">Delete</button>
                     </form>
                 </div>
             {% endfor %}

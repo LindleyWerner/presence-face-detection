@@ -137,6 +137,8 @@ class Processor:
             raise FileNotFoundError(f"Target person folder not found: {target_name}")
         if not source_dir.exists():
             raise FileNotFoundError(f"Source person folder not found: {source_name}")
+        if target_name == source_name:
+            raise ValueError("Cannot merge a person into the same person.")
 
         target_embeddings = self._load_embeddings(target_dir)
         source_embeddings = self._load_embeddings(source_dir)
@@ -152,6 +154,15 @@ class Processor:
         AttendanceManager(paths).merge_people(target_name, source_name)
         shutil.rmtree(source_dir)
         append_log(paths, f"MERGE {source_name} -> {target_name}")
+
+    def delete_person(self, root: Path | str, project_name: str, person_name: str) -> None:
+        paths = build_project_paths(root, project_name, self.settings)
+        person_dir = paths.people_dir / person_name
+        if not person_dir.exists():
+            raise FileNotFoundError(f"Person folder not found: {person_name}")
+        shutil.rmtree(person_dir)
+        AttendanceManager(paths).delete_person(person_name)
+        append_log(paths, f"DELETE {person_name}")
 
     def _store_face_record(
         self,
