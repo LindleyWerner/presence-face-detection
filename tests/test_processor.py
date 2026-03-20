@@ -70,6 +70,33 @@ class ProcessorIdentityTests(unittest.TestCase):
         self.assertEqual(int(row["2025-08-15"]), 1)
         self.assertEqual(int(row["2025-08-16"]), 1)
 
+    def test_merge_people_keeps_latest_last_seen_date(self) -> None:
+        target_dir = self._create_person("person_0001")
+        source_dir = self._create_person("person_0002")
+        save_json(
+            target_dir / self.processor.settings.metadata_filename,
+            {
+                "display_name": "person_0001",
+                "canonical_score": 1.0,
+                "canonical_image": self.processor.settings.canonical_filename,
+                "last_seen": "2026-03-18",
+            },
+        )
+        save_json(
+            source_dir / self.processor.settings.metadata_filename,
+            {
+                "display_name": "person_0002",
+                "canonical_score": 1.0,
+                "canonical_image": self.processor.settings.canonical_filename,
+                "last_seen": "2026-03-20",
+            },
+        )
+
+        self.processor.merge_people(self.root, self.project, "person_0001", "person_0002")
+
+        metadata = load_json(target_dir / self.processor.settings.metadata_filename)
+        self.assertEqual(metadata["last_seen"], "2026-03-20")
+
     def test_delete_person_removes_folder_and_attendance(self) -> None:
         self._create_person("person_0001")
         attendance = AttendanceManager(self.paths)

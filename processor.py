@@ -226,6 +226,10 @@ class Processor:
             if source_canonical.exists():
                 shutil.copy2(source_canonical, target_dir / self.settings.canonical_filename)
                 target_meta["canonical_score"] = source_meta.get("canonical_score", 0.0)
+        target_last_seen = str(target_meta.get("last_seen", "") or "")
+        source_last_seen = str(source_meta.get("last_seen", "") or "")
+        if source_last_seen and (not target_last_seen or source_last_seen > target_last_seen):
+            target_meta["last_seen"] = source_last_seen
         save_json(target_meta_path, target_meta)
 
     def _save_image(self, destination: Path, image_rgb: np.ndarray) -> None:
